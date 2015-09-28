@@ -1,0 +1,153 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>First Steps</title>
+    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background:#000;
+        }
+    </style>
+</head>
+<body>
+
+<script type="text/javascript">
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var left;
+var right;
+var bg1;
+var button1;
+
+WebFontConfig = {
+
+    //  'active' means all requested fonts have finished loading
+    //  We set a 1 second delay before calling 'createText'.
+    //  For some reason if we don't the browser cannot render the text the first time it's created.
+    active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+
+    //  The Google Fonts we want to load (specify as many as you like in the array)
+    google: {
+      families: ['VT323']
+    }
+
+};
+
+function gofull() {
+
+    if (game.scale.isFullScreen)
+    {
+        game.scale.stopFullScreen();
+    }
+    else
+    {
+        game.scale.startFullScreen(false);
+    }
+
+}
+
+function preload(){
+	
+	game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+	
+	game.load.image('background', 'assets/desert.png', 1611, 640);
+	game.load.spritesheet('guy', 'assets/firststeps.png', 24, 32);
+	
+	game.scale.pageAlignHorizontally = true;
+	game.scale.pageAlignVertically = true;
+	game.scale.refresh();
+}
+
+var guy;
+var cursors;
+var text = null;
+var buttonText = null;
+var grd;
+
+function create(){
+	bg1 = game.add.tileSprite(0, 0, 1611, 640, 'background');
+	bg2 = game.add.sprite(bg1.width, 0, 'background');
+	
+	game.physics.startSystem(Phaser.Physics.ARCADE);
+	guy = game.add.sprite(game.world.width/3, game.world.height/2-40, 'guy');
+	guy.animations.add('left', [0, 1, 2, 3], 4, true);
+	guy.animations.add('right', [5, 6, 7, 8], 4, true);
+	guy.scale.setTo(2,2);
+	game.physics.arcade.enable(guy);
+	
+	guy.animations.play('right', 10, true);
+	
+	cursors = game.input.keyboard.createCursorKeys();
+	
+	for (var i = 0; i <= 3; i++) {
+		button = new Phaser.Rectangle(i*200+20, 20, 160, 50);
+		game.debug.geom(button, '#666');
+	}
+	
+	game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
+	game.input.onDown.add(gofull, this);
+	//button = new Phaser.Rectangle(20, 20, 200, 50);
+	//game.debug.geom(button, '#0fffff');
+}
+
+function createText(){
+	text = game.add.text(game.world.centerX, game.world.centerY, "the endless march of\nINFLUENCE...");
+    text.anchor.setTo(0.5);
+    text.y = 500;
+    text.x = 200;
+
+    text.font = 'VT323';
+    text.fontSize = 40;
+
+    //  x0, y0 - x1, y1
+    grd = text.context.createLinearGradient(0, 0, 0, text.canvas.height);
+    grd.addColorStop(0, '#fff');   
+    grd.addColorStop(1, '#999');
+    text.fill = grd;
+
+    text.align = 'center';
+    text.stroke = '#666';
+    text.strokeThickness = 3;
+    text.setShadow(3, 3, 'rgba(0,0,0,0.3)', 5);
+    
+    var style = { font: "22px VT323", fill: "#ff0044", wordWrap: true, wordWrapWidth: button.width, align: "center" };
+
+	buttonText = game.add.text(0, 0, "humor", style);
+	buttonText.anchor.set(0.5);
+	buttonText.x = 10;
+	buttonText.y = 10;
+}
+
+function update(){
+	
+	guy.body.velocity.x = 0;
+	bg1.tilePosition.x -= 1;
+	
+	/*if (cursors.left.isDown)
+	{
+		// Move to the LEFT
+		guy.body.velocity.x = -150;
+		guy.animations.play('left');
+	}
+	
+	else if (cursors.right.isDown)
+	{
+		// Move to the RIGHT
+		guy.body.velocity.x = 150;
+		guy.animations.play('right');
+	}
+	
+	else
+	{
+		// Stand still
+		guy.animations.stop();
+		guy.frame = 4;
+	}*/
+	
+}
+
+</script>
+</body>
+</html>
