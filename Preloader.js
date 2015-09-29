@@ -25,6 +25,9 @@ BasicGame.Preloader.prototype = {
 		//	As this is just a Project Template I've not provided these assets, swap them for your own.
 		this.load.image('desert', 'assets/desert.png');
 		this.load.image('flash', 'assets/flash.png');
+		this.load.image('card', 'assets/button1.png');
+		
+		this.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 		//this.load.image('titlepage', 'images/title.jpg');
 		//this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 		//this.load.audio('titleMusic', ['audio/main_menu.mp3']);
